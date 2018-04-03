@@ -27,7 +27,6 @@ function init(){
 function loadTeams(object){
   let datalist = document.createElement('datalist');
   datalist.id = 'teams';
-  console.log('testing')
   let option;
   for(let i = 0; i<teams.length; i++){
     if(selectedTeams.indexOf(teams[i]) === -1 ){
