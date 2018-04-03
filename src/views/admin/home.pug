@@ -1,0 +1,32 @@
+extends ../layout.pug
+block content
+  p Create new round
+
+  form(action='/admin/scrape' method='get')
+    label League
+      select
+        option(value='premierLeague', name='league') Premier League
+
+    label Round
+     input(type='number' class="round" name='round' value='1' max='48' min='1')
+
+    input(type='submit' value='Get Round')
+
+  form
+    label date
+      input(type="date" class="matchDate")
+    label Hour
+      input(type="number" class="matchHour" value="12" min="0" max="23")
+    label Minute
+      input(type="number" class='matchMinutes' value="0" min="0" max="59")
+    label Home Team
+      input(type="text" list='teams' class="homeTeam_input")
+    label Away Team
+      input(type="text" list='teams' class="awayTeam_input")
+    input(type="button" value="Add Match" onClick="addMatch()")
+
+  .readyMatches
+
+  input(type="button" value="Create Round" onClick="createRound()")
+
+  script(src="../js/adminHome.js")
