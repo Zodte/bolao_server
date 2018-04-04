@@ -1,6 +1,8 @@
 /* eslint no-param-reassign: ["error", { "props": false }] */
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const passport = require('passport');
 
 const app = express();
 app.use(bodyParser.json());
@@ -10,15 +12,19 @@ const path = require('path');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(__dirname));
 app.set('view engine', 'pug');
-// breyta þarf hér fyrir    user   password                    database
+
+// Passport config
+require('./config/passport')(passport);
 
 app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.use('/admin', require('./routes/admin.js'));
+app.use('/admin', require('./routes/admin'));
 
-app.use('/database', require('./routes/database.js'));
+app.use('/database', require('./routes/database'));
+
+app.use('/auth', require('./routes/auth'))
 
 app.get('/information', (req, res) => {
   res.render('information');
