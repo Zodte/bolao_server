@@ -4,10 +4,6 @@ let moment = require('moment');
 
 let app     = express();
 
-mongoose.connect('mongodb://localhost/bolao')
-.then(() => console.log('MongoDB connected...'))
-.catch(err => console.log(err));
-
 app.post('/saveRound', (req, res) => {
   // NEED TO UPDATE FOR MONGOOSE
   // client.connect((err) => {

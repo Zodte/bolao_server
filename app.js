@@ -2,7 +2,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const passport = require('passport');
+
+//Load keys
+const keys = require('./config/keys');
+
+//Map global promises
+mongoose.Promise = global.Promise;
+//Mongoose connect
+mongoose.connect(keys.mongoURI)
+  .then(() => console.log('mongoDB connecteed'))
+  .catch(err => console.log(err))
 
 const app = express();
 app.use(bodyParser.json());
@@ -12,6 +24,9 @@ const path = require('path');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(__dirname));
 app.set('view engine', 'pug');
+
+//Load User model
+require('./models/User');
 
 // Passport config
 require('./config/passport')(passport);
@@ -23,6 +38,22 @@ app.get('/', (req, res) => {
 app.use('/admin', require('./routes/admin'));
 
 app.use('/database', require('./routes/database'));
+
+app.use(cookieParser);
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUnitialized: false
+}))
+
+//Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+//set gloval vars
+app.use((req, res, next) => {
+  res.locals.user.user = req.user || null ;
+})
 
 app.use('/auth', require('./routes/auth'))
 
@@ -58,6 +89,7 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use((err, req, res, next) => {
+
   /* jshint unused: false */
 
   res.status(err.status || 500);
