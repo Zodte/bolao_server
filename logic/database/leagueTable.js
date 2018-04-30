@@ -28,7 +28,7 @@ app.post('/saveRound', (req, res) => {
   res.send("yey")
 })
 
-app.get('/getRound', (req, res) => {
+app.get('/getLeagueTableByLeague', (req, res) => {
   res.send({
     "Hey":"Hello"
   })
