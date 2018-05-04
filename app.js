@@ -25,7 +25,7 @@ app.use(express.static(__dirname));
 app.set('view engine', 'pug');
 
 //Load User model
-require('./models/User');
+require('./models/user');
 
 // Passport config
 require('./config/passport')(passport);
