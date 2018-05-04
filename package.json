@@ -1,5 +1,5 @@
 {
-  "name": "santaintroubles",
+  "name": "ballOn",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -12,23 +12,15 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "cheerio": "^1.0.0-rc.2",
-    "connect-pg-simple": "^3.1.2",
-    "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-beta.3",
-    "email-templates": "^2.6.0",
     "express": "^4.14.0",
-    "express-session": "^1.15.6",
     "moment": "^2.22.0",
     "mongoose": "^5.0.12",
     "nodemailer": "^4.6.4",
     "npm": "^5.8.0",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^1.0.0",
-    "pg": "^6.4.2",
-    "pg-promise": "^5.3.5",
-    "pug": "^2.0.0-beta6",
-    "sendgrid": "^5.1.2",
-    "xoauth2": "^1.2.0"
+    "pug": "^2.0.0-beta6"
   },
   "devDependencies": {
     "chai": "^3.5.0",
