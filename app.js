@@ -2,8 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
+const cookieSession = require('cookie-session');
 const passport = require('passport');
 
 //Load keys
@@ -39,13 +38,10 @@ app.use('/admin', require('./routes/admin'));
 
 app.use('/database', require('./routes/database'));
 
-app.use(cookieParser);
-app.use(session({
-  secret: 'secret',
-  resave: false,
-  saveUnitialized: false
+app.use(cookieSession({
+  maxAge: 30 * 24 * 60 * 60 * 1000,
+  keys: [keys.cookieKey]
 }))
-
 //Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
