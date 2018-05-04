@@ -13,7 +13,6 @@ module.exports = function(passport){
     User.findById(id)
       .then(user => done(null, user))
   });
-
   passport.use(
     new GoogleStrategy({
       clientID: keys.googleClientID,
