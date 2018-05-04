@@ -38,6 +38,8 @@ app.use('/admin', require('./routes/admin'));
 
 app.use('/database', require('./routes/database'));
 
+app.use('/auth', require('./routes/auth'));
+
 app.use(cookieSession({
   maxAge: 30 * 24 * 60 * 60 * 1000,
   keys: [keys.cookieKey]
@@ -45,13 +47,6 @@ app.use(cookieSession({
 //Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
-
-//set gloval vars
-app.use((req, res, next) => {
-  res.locals.user.user = req.user || null ;
-})
-
-app.use('/auth', require('./routes/auth'))
 
 app.get('/information', (req, res) => {
   res.render('information');
