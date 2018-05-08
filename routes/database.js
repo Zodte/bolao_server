@@ -1,7 +1,9 @@
 let express = require('express');
 let database = express.Router();
 
-database.use('/leagueTable', require('../logic/database/leagueTable'));
+database.get('/leagueTable', (req, res) => {
+  res.send('/leagueTable')
+});
 
 
 module.exports = database;

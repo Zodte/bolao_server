@@ -19,11 +19,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const path = require('path');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(__dirname));
-app.set('view engine', 'pug');
-
 //Load User model
 require('./models/user');
 
@@ -53,47 +48,9 @@ if(process.env.NODE_ENV === 'production'){
   // if it doens't recognize the route
   //const path = require('path');
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 
 }
-
-
-
-// catch 404 and forward to error handler
-app.use((req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use((err, req, res, next) => {
-    /* jshint unused: false */
-
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err,
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use((err, req, res, next) => {
-
-  /* jshint unused: false */
-
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: { },
-  });
-});
 
 module.exports = app;
