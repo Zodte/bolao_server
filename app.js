@@ -41,7 +41,7 @@ app.use('/auth', require('./routes/auth'));
 if(process.env.NODE_ENV === 'production'){
   //Express will serve up production assets
   // like oyr main.js file, or main.css file
-  //app.use(express.static('client/build'));
+  app.use(express.static('client/build'));
   //Express will serve uo the index.html profile
   // if it doens't recognize the route
   const path = require('path');
