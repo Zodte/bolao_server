@@ -1,0 +1,23 @@
+.header, .roundGuesses, .leagueRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 60px;
+  width: 100%; }
+
+* {
+  padding: 0;
+  box-sizing: border-box; }
+
+.defaultButton {
+  height: 24px;
+  padding: 0 10px 0 10px; }
+
+.header {
+  background-color: #bdd5fc; }
+
+.roundGuesses {
+  background-color: #bdd5fc; }
+
+.leagueRow {
+  background-color: 'black'; }
