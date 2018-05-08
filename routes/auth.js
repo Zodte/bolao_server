@@ -8,17 +8,24 @@ router.get('/google', passport.authenticate('google',
   }
 ));
 
-router.get('/google/callback', passport.authenticate('google',
-{ failureRedirect: '/'}), (req, res) => {
-  res.redirect('/')
-});
+router.get(
+  '/google/callback',
+  passport.authenticate('google'),
+  (req, res) => {
+    res.redirect('/')
+  }
+);
 
 
 router.get('/logout', (req, res) => {
-  // if(req.user){
-  //   req.logout();
-  // }
+  if(req.user){
+    req.logout();
+  }
   res.redirect('/');
 })
+
+router.get('/api/current_user', (req, res) => {
+  res.send(req.user);
+});
 
 module.exports = router;

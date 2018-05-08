@@ -20,7 +20,7 @@ module.exports = function(passport){
       callbackURL:'/auth/google/callback',
       proxy: true
     },
-    (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {
       const image = profile.photos[0].value.substring(0, profile.photos[0].value.indexOf('?'));
 
       const newUser = {
@@ -32,18 +32,15 @@ module.exports = function(passport){
       }
 
       //Check for existing users
-      User.findOne({
+      const existingUser = await User.findOne({
         googleID: profile.id
-      }).then(existingUser => {
-        if(existingUser){
-          done(null, existingUser);
-        }else{
-          // Create user
-          new User(newUser)
-            .save()
-            .then(user => done(null, user));
-        }
       })
+      if(existingUser){
+        done(null, existingUser);
+      }else{
+        const user = await new User(newUser).save()
+        done(null, user);
+      }
     })
   );
 }

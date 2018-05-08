@@ -30,16 +30,6 @@ require('./models/user');
 // Passport config
 require('./config/passport')(passport);
 
-app.get('/', (req, res) => {
-  res.render('index');
-});
-
-app.use('/admin', require('./routes/admin'));
-
-app.use('/database', require('./routes/database'));
-
-app.use('/auth', require('./routes/auth'));
-
 app.use(cookieSession({
   maxAge: 30 * 24 * 60 * 60 * 1000,
   keys: [keys.cookieKey]
@@ -48,9 +38,25 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use('/admin', require('./routes/admin'));
+app.use('/database', require('./routes/database'));
+app.use('/auth', require('./routes/auth'));
 app.get('/information', (req, res) => {
   res.render('information');
 });
+
+if(process.env.NODE_ENV === 'production'){
+  //Express will serve up production assets
+  // like oyr main.js file, or main.css file
+  app.use(express.static('client/build'));
+  //Express will serve uo the index.html profile
+  // if it doens't recognize the route
+  //const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  });
+
+}
 
 
 
