@@ -1,21 +1,20 @@
-const express = require('express');
-const router = express.Router()
 
-router.get('/current_user', (req, res) => {
-  res.send(req.user);
-});
 
-router.get('/testing', (req, res) => {
-  res.send({
-    "yep": "sucka!"
+module.exports = app => {
+  app.get('/api/current_user', (req, res) => {
+    res.send(req.user);
   });
-});
 
-router.get('/logout', (req, res) => {
-  if(req.user){
-    req.logout();
-  }
-  res.redirect('/');
-})
+  app.get('/api/testing', (req, res) => {
+    res.send({
+      "yep": "sucka!"
+    });
+  });
 
-module.exports = router;
+  app.get('/api/logout', (req, res) => {
+    if(req.user){
+      req.logout();
+    }
+    res.redirect('/');
+  })
+}

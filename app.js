@@ -33,7 +33,7 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api', require('./routes/api'));
+require('./routes/api')(app);
 app.use('/admin', require('./routes/admin'));
 app.use('/database', require('./routes/database'));
 app.use('/auth', require('./routes/auth'));
