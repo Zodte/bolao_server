@@ -11,13 +11,17 @@ const UserSchema = new Schema({
     require:true
   },
   firstName:{
-    type:String,
+    type:String
   },
   lastName:{
     type:String
   },
   image:{
     type:String
+  },
+  admin:{
+    type:Boolean,
+    default: false
   }
 });
 

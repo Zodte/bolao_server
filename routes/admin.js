@@ -1,23 +1,22 @@
-let express = require('express');
-let admin = express.Router();
+const mongoose = require('mongoose');
+const requireLogin = require('../middlewares/requireLogin');
+const requireAdmin = require('../middlewares/requireAdmin');
+const Championship = mongoose.model('championships');
 
-admin.get('/', (req, res) => {
-  //if logged in go to home
-  //else go to admin
-res.send('admin/admin')
-});
+module.exports = app => {
+  app.get('/api/championship', requireLogin, async (req, res) => {
+    const championships = await Championship.find();
 
-admin.get('/home', (req, res) => {
-  res.send('admin/home');
-});
+    res.send(championships);
+  });
 
-admin.use('/scrape', require('../logic/admin/scrape'));
+  app.post('/api/championship', requireLogin, requireAdmin, async (req, res) => {
+    const championship = new Championship({
+      name: req.body.name,
+      teams: req.body.teams
+    });
+    const savedChampionship = await championship.save();
+    res.send(savedChampionship);
+  });
 
-admin.post('/submitPass', (req, res) => {
-  //req.body.name
-  //req.body.password
-  res.redirect('/admin')
-});
-
-
-module.exports = admin;
+};

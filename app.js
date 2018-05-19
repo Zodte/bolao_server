@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //Load User model
 require('./models/user');
+require('./models/championship');
 
 // Passport config
 require('./config/passport')(passport);
@@ -34,7 +35,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./routes/api')(app);
-app.use('/admin', require('./routes/admin'));
+require('./routes/admin')(app);
 app.use('/database', require('./routes/database'));
 app.use('/auth', require('./routes/auth'));
 

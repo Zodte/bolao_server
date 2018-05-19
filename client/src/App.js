@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from './actions';
+
 //Components
 import Header from './components/Header';
 import Leagues from './components/Leagues/Leagues';
-import LeagueTable from './components/LeagueTable/LeagueTable';
-import RoundTable from './components/RoundTable/RoundTable';
-import GuessTable from './components/GuessTable/GuessTable';
+import LeagueHome from './components/LeagueHome';
+import Admin from './components/Admin/';
+
+import AddChampionship from './components/Admin/AddChampionship';
+import AddRound from './components/Admin/AddRound';
 
 import data from './states.json';
-
-
-
 
 class App extends Component {
   constructor(props) {
@@ -49,9 +49,10 @@ class App extends Component {
           <div>
             <Header />
             <Route exact path='/' component={Leagues} />
-            <Route path='/roundTable' component={RoundTable} />
-            <Route path='/leagueTable' component={LeagueTable} />
-            <Route path='/guessTable' component={GuessTable} />
+            <Route exact path='/league' component={LeagueHome} />
+            <Route exact path='/admin' component={Admin} />
+            <Route exact path='/addChampionship' component={AddChampionship} />
+            <Route exact path='/addRound' component={AddRound} />
           </div>
         </BrowserRouter>
       </div>

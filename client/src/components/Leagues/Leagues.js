@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import League from './League';
+import LeagueRow from './LeagueRow';
 
 class Leagues extends Component {
   render () {
