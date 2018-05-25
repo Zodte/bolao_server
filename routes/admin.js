@@ -19,4 +19,9 @@ module.exports = app => {
     res.send(savedChampionship);
   });
 
+  app.post('/api/championshipRound', requireLogin, requireAdmin, async (req, res) => {
+    console.log('Received: ', req.body)
+    res.send('Completed')
+  })
+
 };

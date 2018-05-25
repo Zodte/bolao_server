@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import TimeInput from 'react-time-input';
+import Select from 'react-select';
 
 class AddRound extends Component {
   constructor(props){
@@ -9,9 +10,10 @@ class AddRound extends Component {
     this.state = {
       championshipSelector: '',
       selectedChampionship: {},
-      gamesInput: 1,
+      gamesInput: 0,
       roundInput: 1,
-      championships:[]
+      championships:[],
+      teamsInput:[]
     }
   }
 
@@ -22,39 +24,103 @@ class AddRound extends Component {
       selectedChampionship: res.data[0],
       championships: res.data
     })
-    console.log(res.data[0])
   }
 
   render(){
-    const onTimeChange = () => {
-
-    }
-
     const selecteChampionship = (e) => {
       const index = this.state.championships.map( championship => championship.name).indexOf(e.target.value)
       this.setState({...this.state, championshipSelector: e.target.value, selectedChampionship: this.state.championships[index]})
     }
 
+    const updateGamesInput = (e) => {
+      let tmpInput = [];
+      for(let j=this.state.teamsInput.length; j<e.target.value; j++){
+          tmpInput.push({
+            homeTeam: '',
+            awayTeam: '',
+            date: '',
+            time: ''
+          })
+      }
+      tmpInput = [...this.state.teamsInput, ...tmpInput];
+      this.setState({
+        ...this.state,
+        teamsInput: tmpInput,
+        gamesInput: e.target.value
+      })
+    }
+
     const renderGamesForm = () => {
       let gamesInput = []
       if(this.state.selectedChampionship.teams){
+        const updateHomeTeamArr = (value, i, prop) => {
+          let arr = [...this.state.teamsInput];
+          arr[i][prop] = value;
+          this.setState(
+            {
+              ...this.state,
+              teamsInput: arr
+            }
+          )
+        }
+        const teamsOptions =
+        this.state.selectedChampionship.teams.map((team) => {
+          return {
+            value: team,
+            label: team
+          }
+        })
+
         for(let i=0; i<this.state.gamesInput; i++){
           gamesInput.push(<div key={i}>
-            <input type='date' />
-            <TimeInput initTime='12:30' />
-            <select>
-            {
-              this.state.selectedChampionship.teams.map( team => {
-                return <option key={team}>{team}</option>
-              })
-            }
-            </select>
-            <input type='text' placeholder='Home Team'/>
-            <input type='text' placeholder='Away Team'/>
+            <input type='date' onChange={e => updateHomeTeamArr(e.target.value, i, 'date')}/>
+            <TimeInput onTimeChange={value => updateHomeTeamArr(value, i, 'time')} />
+            <Select options={teamsOptions} onChange={value => updateHomeTeamArr(value.value, i, 'homeTeam')}/>
+            <Select options={teamsOptions} onChange={value => updateHomeTeamArr(value.value, i, 'awayTeam')}/>
           </div>)
         }
       }
       return gamesInput;
+    }
+
+    const submitRound = () => {
+      //Check if there are any repeated or empty teamInputs
+      let checkArray = [];
+      const isEmptyOrRepeat = team => {
+        if(team === '' || checkArray.indexOf(team) >= 0){
+          return true;
+        }else{
+          return false
+        }
+      }
+      for(let i in this.state.teamsInput){
+        let game = this.state.teamsInput[i]
+        if(isEmptyOrRepeat(game.homeTeam)){
+          return;
+        }else{
+          checkArray.push(game.homeTeam);
+        }
+        if(isEmptyOrRepeat(game.awayTeam)){
+          return;
+        }else{
+          checkArray.push(game.awayTeam);
+        }
+        //Check if date and time were completed
+        if(!(game.date != '' && game.time != '')){
+          return;
+        }
+        let dat = new Date(game.date);
+        if(dat.getTime() < Date.now()){
+          return;
+        }
+      }
+
+      const round = {
+        round : parseInt(this.state.roundInput),
+        games : this.state.teamsInput,
+        championship_ID : this.state.selectedChampionship._id
+      }
+      axios.post('/api/championshipRound', round)
     }
 
     return(
@@ -72,14 +138,12 @@ class AddRound extends Component {
           <input type='number' name='round' value={this.state.roundInput} onChange={((e) => this.setState({...this.state, roundInput: e.target.value}))} min='1'/>
         </label>
         <label>Games
-          <input type='number' name='round' value={this.state.gamesInput} onChange={((e) => this.setState({...this.state, gamesInput: e.target.value}))} min='1'/>
+          <input type='number' name='round' value={this.state.gamesInput} onChange={updateGamesInput} min='1'/>
         </label>
         {
           renderGamesForm()
         }
-        {
-          this.state.selectedChampionship.teams
-        }
+        <button onClick={submitRound}>Submit</button>
       </div>
     )
   }
