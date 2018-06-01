@@ -22,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Load User model
 require('./models/user');
 require('./models/championship');
+require('./models/round');
 
 // Passport config
 require('./config/passport')(passport);

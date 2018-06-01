@@ -85,6 +85,9 @@ class AddRound extends Component {
 
     const submitRound = () => {
       //Check if there are any repeated or empty teamInputs
+      if(this.state.gamesInput < 1){
+        return;
+      }
       let checkArray = [];
       const isEmptyOrRepeat = team => {
         if(team === '' || checkArray.indexOf(team) >= 0){
@@ -117,10 +120,10 @@ class AddRound extends Component {
 
       const round = {
         round : parseInt(this.state.roundInput),
-        games : this.state.teamsInput,
+        matches : this.state.teamsInput,
         championship_ID : this.state.selectedChampionship._id
       }
-      axios.post('/api/championshipRound', round)
+      axios.post('/api/round', round)
     }
 
     return(
