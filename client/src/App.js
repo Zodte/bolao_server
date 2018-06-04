@@ -5,12 +5,13 @@ import * as actions from './actions';
 
 //Components
 import Header from './components/Header';
-import Leagues from './components/Leagues/Leagues';
+import LeaguesTable from './components/Leagues/LeaguesTable';
 import LeagueHome from './components/LeagueHome';
 import Admin from './components/Admin/';
 
 import AddChampionship from './components/Admin/AddChampionship';
 import AddRound from './components/Admin/AddRound';
+import AddLeague from './components/Leagues/AddLeague';
 
 import data from './states.json';
 
@@ -48,11 +49,12 @@ class App extends Component {
         <BrowserRouter>
           <div>
             <Header />
-            <Route exact path='/' component={Leagues} />
+            <Route exact path='/' component={LeaguesTable} />
             <Route exact path='/league' component={LeagueHome} />
             <Route exact path='/admin' component={Admin} />
             <Route exact path='/addChampionship' component={AddChampionship} />
             <Route exact path='/addRound' component={AddRound} />
+            <Route exact path='/addLeague' component={AddLeague} />
           </div>
         </BrowserRouter>
       </div>

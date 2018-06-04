@@ -17,4 +17,6 @@ const roundSchema = new Schema({
   }
 })
 
+roundSchema.index({ round: 1, championship_ID: 1 }, { unique: true })
+
 mongoose.model('rounds', roundSchema);

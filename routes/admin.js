@@ -5,13 +5,7 @@ const Championship = mongoose.model('championships');
 const Round = mongoose.model('rounds');
 
 module.exports = app => {
-  app.get('/api/championship', requireLogin, async (req, res) => {
-    const championships = await Championship.find();
-
-    res.send(championships);
-  });
-
-  app.post('/api/championship', requireLogin, requireAdmin, async (req, res) => {
+    app.post('/api/championship', requireLogin, requireAdmin, async (req, res) => {
     const championship = new Championship({
       name: req.body.name,
       teams: req.body.teams
@@ -20,14 +14,7 @@ module.exports = app => {
     res.send(savedChampionship);
   });
 
-  app.get('/api/round', requireLogin, async (req, res) => {
-    console.log('getting rounds')
-    const rounds = await Round.find();
-    res.send(rounds)
-  })
-
   app.post('/api/round', requireLogin, requireAdmin, async (req, res) => {
-    console.log('saving round')
     let startDate = new Date(`${req.body.matches[0].date} ${req.body.matches[0].time}`);
     let endDate = new Date(`${req.body.matches[0].date} ${req.body.matches[0].time}`);
     for(let i in req.body.matches){
@@ -49,7 +36,6 @@ module.exports = app => {
     })
 
     const savedRound = await round.save();
-    console.log('round saved')
     res.send(savedRound)
   })
 

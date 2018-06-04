@@ -23,6 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 require('./models/user');
 require('./models/championship');
 require('./models/round');
+require('./models/league');
 
 // Passport config
 require('./config/passport')(passport);

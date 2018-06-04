@@ -10,7 +10,12 @@ class Header extends Component {
       case false:
         return <a href="/auth/google">Login With Google</a>;
       default:
-        return <a href="/api/logout">Logout</a>
+        return (
+          <span>
+            <p>Welcome, {this.props.auth.firstName} {this.props.auth.lastName}</p>
+            <a href="/api/logout">Logout</a>
+          </span>
+        )
     }
   }
 
