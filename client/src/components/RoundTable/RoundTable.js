@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import RoundTablePlayer from './RoundTablePlayer.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as roundTableActions from '../../actions/roundTableActions';
+import { roundTableActions} from '../../actions';
 import { orderRoundsByProperty } from '../../tools';
 
 class RoundTable extends Component {
@@ -54,7 +54,6 @@ class RoundTable extends Component {
         </table>
       </div>
     )
-    return <div></div>
   }
 }
 

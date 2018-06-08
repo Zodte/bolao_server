@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as guessTableActions from '../../actions/guessTableActions';
+import { guessTableActions } from '../../actions';
 
 import GuessTableGame from './GuessTableGame';
 

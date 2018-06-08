@@ -26,9 +26,41 @@ module.exports = app => {
     res.send(rounds)
   })
 
-  app.get('/api/league', async (req, res) => {
-    const leagues = await League.find();
+  app.get('/api/leagues', async (req, res) => {
+    const leagues = await League.find()
+    .populate('championship_ID')
     res.send(leagues);
+  });
+
+  app.get('/api/league', async (req, res) =>{
+    console.log(req.query)
+    const league = await League.findById(req.query.leagueID);
+    console.log(league)
+    res.send(league)
+  });
+
+  app.put('/api/addPlayerToLeague/', requireLogin, async (req, res) => {
+    const league = await League.findById(req.body.leagueID)
+    if(league.private){
+      if(req.body.password !== league.password){
+        return res.send({error: 'The password is not correct'});
+      }
+    }
+    let existingPlayer = false;
+    for(let i = 0; i<league.players.length; i++){
+      if(league.players[i].toString() === req.user._id.toString()){
+        existingPlayer = true;
+        break;
+      }
+    }
+    if(existingPlayer){
+      return res.send({error: 'This user is already in this league'});
+    }
+
+    await league.players.push(req.user._id);
+    //const updatedLeague = await league.save();
+
+    res.send('updatedLeague')
   })
 
   app.post('/api/league', requireLogin, async (req, res) => {

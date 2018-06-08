@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as adminActions from '../../actions/adminActions';
+import { adminActions } from '../../actions';
 import axios from 'axios';
 
 class AddChampionship extends Component {
@@ -35,7 +35,7 @@ class AddChampionship extends Component {
     const addTeam = () => {
       const team = this.state.team_name
       const ok = this.state.teams.indexOf(team);
-      if(ok === -1 && team != ''){
+      if(ok === -1 && team !== ''){
         this.setState({
           ...this.state,
           teams: [ ...this.state.teams, team],
@@ -53,7 +53,7 @@ class AddChampionship extends Component {
       })
     }
     const createChampionship = () => {
-      if(this.state.championship_name != ''){
+      if(this.state.championship_name !== ''){
         const championship = {
           name: this.state.championship_name,
           teams: this.state.teams

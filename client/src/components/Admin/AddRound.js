@@ -109,7 +109,7 @@ class AddRound extends Component {
           checkArray.push(game.awayTeam);
         }
         //Check if date and time were completed
-        if(!(game.date != '' && game.time != '')){
+        if(!(game.date !== '' && game.time !== '')){
           return;
         }
         let dat = new Date(game.date);
@@ -119,7 +119,7 @@ class AddRound extends Component {
       }
 
       const round = {
-        round : parseInt(this.state.roundInput),
+        round : parseInt(10, this.state.roundInput),
         matches : this.state.teamsInput,
         championship_ID : this.state.selectedChampionship._id
       }

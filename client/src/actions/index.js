@@ -1,10 +1,15 @@
-import axios from 'axios';
-import actions from './actions'
+import * as adminActions from './adminActions';
+import * as guessTableActions from './guessTableActions';
+import * as leagueActions from './leagueActions';
+import * as leaguesTableActions from './leaguesTableActions';
+import * as leagueTableActions from './leagueTableActions';
+import * as roundTableActions from './roundTableActions';
+import * as userActions from './userActions';
 
-export const fetchUser = () => async dispatch => {
-    const res = await axios.get('./api/current_user')
-    dispatch({
-        type: actions.FETCH_USER,
-        payload: res.data
-    });
-};
+export { adminActions };
+export { guessTableActions };
+export { leagueActions };
+export { leaguesTableActions };
+export { leagueTableActions };
+export { roundTableActions };
+export { userActions };

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Select from 'react-select';
 
 class AddLeague extends Component {
   constructor(props){
@@ -32,7 +31,7 @@ class AddLeague extends Component {
       this.setState({...this.state, championshipSelector: e.target.value, selectedChampionship: this.state.championships[index]})
     }
     const createNewLeague = () => {
-      const playersLimit = parseInt(this.state.playersLimitInput)
+      const playersLimit = parseInt(10, this.state.playersLimitInput)
       if(this.state.nameInput.length < 3 || this.state.nameInput.length > 36){
         console.log('The league name must be between 3 and 36 characters long');
         return;

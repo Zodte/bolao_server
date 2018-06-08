@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import LeagueTablePlayer from './LeagueTablePlayer.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as leagueTableActions from '../../actions/leagueTableActions';
+import { leagueTableActions } from '../../actions';
 import { orderRoundsByProperty } from '../../tools';
 
 class LeagueTable extends Component {
 
   renderPlayers() {
-    let selectedRound = selectedRound=this.props.leagueTable.selectedRound-1;
+    let selectedRound = this.props.leagueTable.selectedRound-1;
     const rounds = orderRoundsByProperty(this.props.leagueTable.roundsByPlayer, selectedRound, this.props.leagueTable.sortBy);
     return rounds.map(i => {
       return (
