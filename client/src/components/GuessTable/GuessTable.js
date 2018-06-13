@@ -8,10 +8,16 @@ import GuessTableGame from './GuessTableGame';
 class GuessTable extends Component {
   renderGames(){
     const selectedRound = this.props.guessTable.selectedRound-1;
-    const games = this.props.guessTable.rounds[selectedRound].games;
-    return games.map( game => {
-      return <GuessTableGame game={game} key={`${game.homeTeam}${game.awayTeam}`} />
-    })
+    const addGuess = async (matchGuess) => {
+      await this.props.guessTableSetMatchGuess(matchGuess);
+    }
+    if(this.props.guessTable.rounds[selectedRound]){
+      const matches = this.props.guessTable.rounds[selectedRound].matches;
+      return matches.map( match => {
+        return <GuessTableGame match={match} addGuess={addGuess} key={`${match.homeTeam}${match.awayTeam}`} edit={this.props.guessTable.edit} />
+      })
+    }
+
   }
   render(){
     const nextRound = () => {
@@ -24,7 +30,25 @@ class GuessTable extends Component {
         this.props.guessTablePrevRound();
       }
     }
-
+    const editRound = () => {
+      this.props.guessTableEditRound();
+    }
+    const saveRound = () => {
+      const guesses = this.props.guessTable.roundGuessing;
+      const selectedRound = this.props.guessTable.selectedRound-1;
+      const roundMatches = this.props.guessTable.rounds[selectedRound].matches;
+      if(guesses.length === roundMatches.length){
+        const roundGuesses = {
+          guesses,
+          round: this.props.guessTable.selectedRound,
+          leagueID: this.props.league.selectedLeague.league._id
+        }
+        console.log(this.props.league.selectedLeague)
+        this.props.guessTableSaveRoundGuesses(roundGuesses);
+      }else{
+        console.log('Guesses not completed')
+      }
+    }
     return(
       <div>
         <h1>Guess Table</h1>
@@ -32,6 +56,7 @@ class GuessTable extends Component {
         <h2>Round { this.props.guessTable.selectedRound }</h2>
         <button className="defaultButton" onClick={nextRound} >+</button>
         { this.renderGames() }
+        {(this.props.guessTable.edit) ? <button onClick={saveRound} >Save</button> : <button onClick={editRound}>Edit</button> }
       </div>
     )
   }
@@ -39,6 +64,7 @@ class GuessTable extends Component {
 
 function mapStateToProps(state){
   return {
+    league: state.league,
     guessTable: state.guessTable
   }
 }

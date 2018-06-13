@@ -9,7 +9,7 @@ class LeagueRow extends Component {
           <td>{this.props.league.championship_ID.name}</td>
           <td>{this.props.league.players.length}/{this.props.league.playersLimit}</td>
           <td>{this.props.league.private ? 'Yes' : 'No'}</td>
-          <td><button onClick={() => this.props.promptJoinLeague(this.props.league)}>Join</button></td>
+          <td><button onClick={() => this.props.button.click(this.props.league)}>{this.props.button.text}</button></td>
         </tr>
       </tbody>
     )

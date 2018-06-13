@@ -22,7 +22,15 @@ const UserSchema = new Schema({
   admin:{
     type:Boolean,
     default: false
-  }
+  },
+  joinedLeagues: [{
+    type: Schema.ObjectId,
+    ref: 'leagues'
+  }],
+  adminLeagues: [{
+    type: Schema.ObjectId,
+    ref: 'leagues'
+  }]
 });
 
 // Create collection and add Schema

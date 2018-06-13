@@ -4,25 +4,36 @@ import RoundTable from './RoundTable/RoundTable';
 import GuessTable from './GuessTable/GuessTable';
 
 import { connect } from 'react-redux';
-import { leagueActions } from '../actions';
+import { leagueActions, guessTableActions } from '../actions';
 
 class LeagueHome extends Component {
-  componentDidMount(){
+  async componentDidMount(){
     if(this.props.league.fetchLeague_Id !== ''){
-      //Get the pending league
-      this.props.leagueFetchLeague(this.props.league.fetchLeague_Id);
-      //empty the pending league
+      //Get the pending league && empty pending id
+      await this.props.leagueFetchLeague(this.props.league.fetchLeague_Id);
+      await this.props.guessTableSetRounds(this.props.league.selectedLeague.rounds)
     }else if(this.props.league.selectedLeague === null){
       this.props.history.push('/myLeagues');
     }
   }
-
   render(){
+    const renderLeagueInfo = () => {
+      if (this.props.league.selectedLeague === null){
+        return (
+          <div></div>
+        )
+      }else{
+        return (
+          <h2>{this.props.league.selectedLeague.name}</h2>
+        )
+      }
+
+    }
     return(
       <div>
-        {(this.props.league.selectedLeague === null) ? "Select League" : this.props.league.selectedLeague.name}
-        <LeagueTable />
-        <RoundTable />
+        {renderLeagueInfo()}
+        {/* <LeagueTable />
+         <RoundTable /> */}
         <GuessTable />
       </div>
     )
@@ -35,4 +46,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, leagueActions)(LeagueHome);
+export default connect(mapStateToProps, {...leagueActions, ...guessTableActions})(LeagueHome);

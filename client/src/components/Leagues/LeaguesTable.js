@@ -18,7 +18,7 @@ class LeaguesTable extends Component {
     const renderLeagueRows = () => {
       return (
         this.props.leaguesTable.allLeagues.map(league => {
-          return <LeagueRow league={league} key={league._id} promptJoinLeague={promptJoinLeague}/>
+          return <LeagueRow league={league} key={league._id} button={{text:'Join', click:promptJoinLeague}}/>
         })
       )
     }
@@ -41,6 +41,7 @@ class LeaguesTable extends Component {
     return (
       <div>
         < Link to='/addLeague'>Create League</ Link >
+        < Link to='/myLeagues'>My Leagues</ Link >
         <table>
           <thead>
             <tr>

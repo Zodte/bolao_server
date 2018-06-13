@@ -29,7 +29,23 @@ const leagueSchema = new Schema({
   championship_ID: {
     type: Schema.ObjectId,
     ref: 'championships'
-  }
+  },
+  roundGuesses: [{
+    round: {
+      type: Number,
+      require: true
+    },
+    player: {
+      type: Schema.ObjectId,
+      ref: 'users',
+      require: true
+    },
+    guesses: [{
+      matchID: String,
+      homeTeamGuess: Number,
+      awayTeamGuess: Number
+    }]
+  }]
 })
 
 mongoose.model('leagues', leagueSchema);

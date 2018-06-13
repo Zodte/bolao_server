@@ -12,6 +12,7 @@ import Admin from './components/Admin/';
 import AddChampionship from './components/Admin/AddChampionship';
 import AddRound from './components/Admin/AddRound';
 import AddLeague from './components/Leagues/AddLeague';
+import MyLeagues from './components/Leagues/MyLeagues';
 
 import data from './states.json';
 
@@ -55,6 +56,7 @@ class App extends Component {
             <Route exact path='/addChampionship' component={AddChampionship} />
             <Route exact path='/addRound' component={AddRound} />
             <Route exact path='/addLeague' component={AddLeague} />
+            <Route exact path='/myLeagues' component={MyLeagues} />
           </div>
         </BrowserRouter>
       </div>

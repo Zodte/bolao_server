@@ -15,3 +15,11 @@ export const leaguesTablePromptJoinLeague = league => {
     payload: league
   }
 }
+
+export const leaguesTableFetchMyLeagues = () => async dispatch => {
+  const res = await axios.get('./api/myLeagues')
+  dispatch({
+    type: actions.LEAGUES_TABLE_FETCH_MY_LEAGUES,
+    payload: res.data
+  })
+}

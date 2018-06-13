@@ -119,7 +119,7 @@ class AddRound extends Component {
       }
 
       const round = {
-        round : parseInt(10, this.state.roundInput),
+        round : parseInt(this.state.roundInput, 10),
         matches : this.state.teamsInput,
         championship_ID : this.state.selectedChampionship._id
       }

@@ -6,7 +6,7 @@ export default function (state = {
 }, action) {
   switch (action.type) {
     case actions.LEAGUE_FETCH_LEAGUE:
-      return {...state, fetchLeague_Id:"", selectedLeague: action.payload}
+      return {...state, fetchLeague_Id:'', selectedLeague: action.payload}
     case actions.LEAGUE_ADD_FETCH_ID:
       return {...state, fetchLeague_Id: action.payload}
     default:
