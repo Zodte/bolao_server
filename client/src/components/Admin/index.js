@@ -7,6 +7,7 @@ class Admin extends Component {
       <div>
         <Link to='/addChampionship'>Add Championship</Link>
         <Link to='/addRound'>Add Round</Link>
+        <Link to='/addScores'>Add Scores</Link>
       </div>
     )
   }

@@ -11,7 +11,6 @@ class LeagueHome extends Component {
     if(this.props.league.fetchLeague_Id !== ''){
       //Get the pending league && empty pending id
       await this.props.leagueFetchLeague(this.props.league.fetchLeague_Id);
-      await this.props.guessTableSetRounds(this.props.league.selectedLeague.rounds)
     }else if(this.props.league.selectedLeague === null){
       this.props.history.push('/myLeagues');
     }

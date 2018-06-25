@@ -18,12 +18,12 @@ module.exports = app => {
   })
 
   app.get('/api/championship', requireLogin, async (req, res) => {
-    const championships = await Championship.find();
+    const championships = await Championship.find({championship_ID: req.body.championship_ID});
     res.send(championships);
   });
 
-  app.get('/api/round', requireLogin, async (req, res) => {
-    const rounds = await Round.find();
+  app.get('/api/rounds', requireLogin, async (req, res) => {
+    const rounds = await Round.find({championship_ID: req.query.championship_ID});
     res.send(rounds)
   })
 
@@ -31,6 +31,11 @@ module.exports = app => {
     const leagues = await League.find()
     .populate('championship_ID')
     res.send(leagues);
+  });
+
+  app.post('/api/saveMatchScore', async (req, res) => {
+    console.log(req.body)
+    res.send('Saved?')
   });
 
   app.get('/api/myLeagues', async (req, res) => {
@@ -42,7 +47,9 @@ module.exports = app => {
   app.get('/api/league', async (req, res) =>{
     const league = await League.findById(req.query.leagueID);
     const rounds = await Round.find({championship_ID: league.championship_ID});
-    res.send({league, rounds})
+    const guesses = await League.findById(req.query.leagueID, {roundGuesses: 1});
+    let myGuesses = guesses.roundGuesses.filter(guess => (guess.player.toString() === req.user._id.toString()) )
+    res.send({league, rounds, myGuesses})
   });
 
   app.post('/api/saveRoundGuesses', async (req, res) => {
@@ -50,21 +57,37 @@ module.exports = app => {
     const leagueID = guesses.leagueID;
     delete guesses.leagueID;
     guesses.player = req.user._id;
-    await League.findOneAndUpdate({_id:leagueID}, { $pull : { roundGuesses: {round: guesses.round, player: guesses.player}}}, {new: true}, (err, data) => console.log(err, data));
-    const savedLeague = await League.findOneAndUpdate({_id:leagueID}, { $push : { roundGuesses:  guesses}}, {new: true})
-    console.log("saved",savedLeague)
-    // if(league.roundGuesses){
-    //   console.log('before round guesses: ',league.roundGuesses)
-    //   const res = await league.roundGuesses.pull({round: guesses.round});
-    //   console.log(res)
-    //   await league.roundGuesses.push(guesses);
-    //   const savedLeague = await league.save();
-    //   console.log('saved round guesses: ',savedLeague.roundGuesses)
-    // }
 
+    const roundGuess = await League.findOne({
+      _id: leagueID,
+      roundGuesses: { $elemMatch: { round: guesses.round, player: guesses.player}}
+    })
+    if(roundGuess){
+      const updatedLeague = await League.update(
+        {
+          _id: leagueID,
+          roundGuesses: { $elemMatch: { round: guesses.round, player: guesses.player}}
+        }, {
+          $set: {
+            "roundGuesses.$": guesses
+          }}
+        )
+    }else{
+      updatedLeague = await League.update({
+        _id: leagueID
+      }, {
+        $addToSet : { "roundGuesses" : guesses }
+      }
+      )
+    }
 
-    res.send('savedLeague')
-  })
+    console.log(updatedLeague)
+    // await League.findOneAndUpdate({_id:leagueID}, { $pull : { roundGuesses: {round: guesses.round, player: guesses.player}}}, {new: true}, (err, data) => console.log('Pull error and data: ', err, data));
+    // const savedLeague = await League.findOneAndUpdate({_id:leagueID}, { $push : { roundGuesses:  guesses}}, {new: true}, (err, data) => console.log('Push error and data: ', err, data))
+    const newGuesses = await League.findById(leagueID, {roundGuesses: 1});
+    let myGuesses = newGuesses.roundGuesses.filter(guess => (guess.player.toString() === req.user._id.toString()) )
+    res.send(myGuesses)
+  });
 
   app.put('/api/addPlayerToLeague/', requireLogin, async (req, res) => {
     const league = await League.findById(req.body.leagueID);

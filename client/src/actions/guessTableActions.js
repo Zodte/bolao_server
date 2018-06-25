@@ -37,7 +37,7 @@ export const guessTableSaveRoundGuesses = round => async dispatch => {
   const res = await axios.post('./api/saveRoundGuesses', round);
   dispatch({
     type: actions.GUESS_TABLE_SAVE_ROUND_GUESSES,
-    payload: { round: res.data }
+    payload: { guesses: res.data }
   })
 }
 
@@ -47,3 +47,9 @@ export function guessTableSetMatchGuess(matchGuess){
     payload: matchGuess
   }
 }
+
+  export const guessTablePreviewRound = () => {
+    return {
+      type: actions.GUESS_TABLE_PREVIEW_ROUND
+    }
+  }

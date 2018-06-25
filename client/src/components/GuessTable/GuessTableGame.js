@@ -4,9 +4,17 @@ class GuessTableGame extends Component {
   constructor(props){
     super(props);
 
-    this.state = {
-      homeTeamGuess: NaN,
-      awayTeamGuess: NaN
+    if(this.props.matchGuess){
+      this.state = {
+        homeTeamGuess: this.props.matchGuess.homeTeamGuess,
+        awayTeamGuess: this.props.matchGuess.awayTeamGuess
+      }
+      this.props.addGuess({...this.state, matchID: this.props.match._id})
+    }else{
+      this.state = {
+        homeTeamGuess: NaN,
+        awayTeamGuess: NaN
+      }
     }
   }
   render(){
@@ -23,13 +31,13 @@ class GuessTableGame extends Component {
       return (
         <span>
           <p>{match.homeTeam}</p>
-          <input type='number' min='0' onChange={(async e => {
+          <input type='number' min='0' value={this.state.homeTeamGuess.toString() || ""} onChange={(async e => {
               await this.setState({homeTeamGuess: parseInt(e.target.value)});
               updateInput();
             }
           )} defaultValue={match.homeGuess}/>
           <p>X</p>
-          <input type='number' min='0' onChange={(async e => {
+          <input type='number' min='0' value={this.state.awayTeamGuess.toString() || ""} onChange={(async e => {
               await this.setState({awayTeamGuess: parseInt(e.target.value)});
               updateInput();
             }
@@ -42,7 +50,7 @@ class GuessTableGame extends Component {
       return (
         <span>
           <p>{match.homeTeam}</p>
-           - x -
+           {(this.props.matchGuess) ? (<p>{this.props.matchGuess.homeTeamGuess} x {this.props.matchGuess.awayTeamGuess}</p>) : <p>- x -</p> }
           <p>{match.awayTeam}</p>
         </span>
       )

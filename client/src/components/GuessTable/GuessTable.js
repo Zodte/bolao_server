@@ -8,13 +8,21 @@ import GuessTableGame from './GuessTableGame';
 class GuessTable extends Component {
   renderGames(){
     const selectedRound = this.props.guessTable.selectedRound-1;
+    let roundMyGuesses = this.props.guessTable.myGuesses.filter(round => round.round == this.props.guessTable.selectedRound);
+    roundMyGuesses = roundMyGuesses[0];
     const addGuess = async (matchGuess) => {
       await this.props.guessTableSetMatchGuess(matchGuess);
     }
     if(this.props.guessTable.rounds[selectedRound]){
       const matches = this.props.guessTable.rounds[selectedRound].matches;
       return matches.map( match => {
-        return <GuessTableGame match={match} addGuess={addGuess} key={`${match.homeTeam}${match.awayTeam}`} edit={this.props.guessTable.edit} />
+        if(roundMyGuesses){
+          const matchGuess = roundMyGuesses.guesses.find(guess => guess.matchID === match._id);
+          return <GuessTableGame match={match} addGuess={addGuess} matchGuess={matchGuess} key={`${match.homeTeam}${match.awayTeam}`} edit={this.props.guessTable.edit} />
+        }else{
+          return <GuessTableGame match={match} addGuess={addGuess} key={`${match.homeTeam}${match.awayTeam}`} edit={this.props.guessTable.edit} />
+        }
+
       })
     }
 
@@ -43,7 +51,6 @@ class GuessTable extends Component {
           round: this.props.guessTable.selectedRound,
           leagueID: this.props.league.selectedLeague.league._id
         }
-        console.log(this.props.league.selectedLeague)
         this.props.guessTableSaveRoundGuesses(roundGuesses);
       }else{
         console.log('Guesses not completed')
@@ -56,7 +63,7 @@ class GuessTable extends Component {
         <h2>Round { this.props.guessTable.selectedRound }</h2>
         <button className="defaultButton" onClick={nextRound} >+</button>
         { this.renderGames() }
-        {(this.props.guessTable.edit) ? <button onClick={saveRound} >Save</button> : <button onClick={editRound}>Edit</button> }
+        {(this.props.guessTable.edit) ? (<div><button onClick={this.props.guessTablePreviewRound}>Cancel</button><button onClick={saveRound} >Save</button></div>) : <button onClick={editRound}>Edit</button> }
       </div>
     )
   }
