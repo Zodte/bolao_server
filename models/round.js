@@ -6,6 +6,8 @@ const roundSchema = new Schema({
   matches : [{
     awayTeam: String,
     homeTeam: String,
+    awayTeamScore: Number,
+    homeTeamScore: Number,
     date: String,
     time: String
   }],

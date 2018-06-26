@@ -37,11 +37,12 @@ class AddScore extends Component {
     })
   }
   renderRow(){
+
     if(this.state.rounds){
       if(this.state.rounds.length){
-        return this.state.rounds[this.state.selectedRound].matches.map(match => {
+        return this.state.rounds[this.state.selectedRound-1].matches.map(match => {
           return (
-            <AddScoreRow key={match._id} match={match} saveScore={this.saveScore}/>
+            <AddScoreRow key={match._id} match={match} saveScore={this.saveScore.bind(this)}/>
           )
         });
       }
@@ -49,8 +50,9 @@ class AddScore extends Component {
   }
 
   async saveScore(match){
+    console.log(this.state.selectedRound)
+    match.round_ID = this.state.rounds[this.state.selectedRound-1]._id;
     const res = await axios.post('/api/saveMatchScore', match);
-    console.log(res.data);
   }
 
   render(){
@@ -60,7 +62,7 @@ class AddScore extends Component {
       this.getChampionshipRounds();
     }
     const setSelectedRound = (e) => {
-      if(e.target.value > 0 && e.target.value < this.state.rounds.length){
+      if(e.target.value > 0 && e.target.value <= this.state.rounds.length){
         this.setState({ ...this.state, selectedRound: e.target.value })
       }
     }

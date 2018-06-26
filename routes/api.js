@@ -35,6 +35,20 @@ module.exports = app => {
 
   app.post('/api/saveMatchScore', async (req, res) => {
     console.log(req.body)
+    const match = req.body;
+    const round = await Round.update(
+      {
+        _id: match.round_ID,
+        matches: { $elemMatch : { _id: match._id } }
+      },
+      {
+        $set : {
+          "matches.$.homeTeamScore": match.homeTeamScore,
+          "matches.$.awayTeamScore": match.awayTeamScore
+        }
+      }
+    )
+    console.log(round)
     res.send('Saved?')
   });
 
