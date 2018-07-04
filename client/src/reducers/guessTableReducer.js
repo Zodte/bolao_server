@@ -1,4 +1,5 @@
 import actions from '../actions/actions';
+import { orderRounds } from '../helper';
 
 const guessTable = (state={
   selectedRound: 1,
@@ -20,11 +21,11 @@ const guessTable = (state={
     case actions.GUESS_TABLE_SET_ROUNDS:
       return {...state, rounds: [...action.payload.rounds]}
     case actions.LEAGUE_FETCH_LEAGUE:
-      return {...state, rounds: [...action.payload.rounds], myGuesses: [...action.payload.myGuesses]}
+      let rounds = orderRounds(action.payload.rounds)
+      return {...state, rounds: rounds, myGuesses: [...action.payload.myGuesses]}
     case actions.GUESS_TABLE_EDIT_ROUND:
       return {...state, edit: true}
     case actions.GUESS_TABLE_SAVE_ROUND_GUESSES:
-    console.log(action.payload.guesses)
       return {...state, edit: false, myGuesses: action.payload.guesses}
     case actions.GUESS_TABLE_SET_MATCH_GUESS:
       let guesses = state.roundGuessing
