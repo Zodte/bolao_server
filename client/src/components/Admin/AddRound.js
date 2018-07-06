@@ -34,9 +34,14 @@ class AddRound extends Component {
   }
 
   render(){
-    const selecteChampionship = (e) => {
+    const selecteChampionship = async (e) => {
       const index = this.state.championships.map( championship => championship.name).indexOf(e.target.value)
-      this.setState({...this.state, championshipSelector: e.target.value, selectedChampionship: this.state.championships[index]})
+      await this.setState({...this.state, championshipSelector: e.target.value, selectedChampionship: this.state.championships[index]})
+      const rounds = await axios.get(`api/rounds/?championship_ID=${this.state.selectedChampionship._id}`);
+      await this.setState({
+        ...this.state,
+        completedRounds: rounds.data
+      })
     }
 
     const updateGamesInput = (e) => {
