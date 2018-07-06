@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import TimeInput from 'react-time-input';
 import Select from 'react-select';
+import moment from 'moment';
 
 class AddRound extends Component {
   constructor(props){
@@ -13,7 +14,8 @@ class AddRound extends Component {
       gamesInput: 0,
       roundInput: 1,
       championships:[],
-      teamsInput:[]
+      teamsInput:[],
+      completedRounds: []
     }
   }
 
@@ -23,6 +25,11 @@ class AddRound extends Component {
       championshipSelector: res.data[0].name,
       selectedChampionship: res.data[0],
       championships: res.data
+    })
+    const rounds = await axios.get(`api/rounds/?championship_ID=${this.state.selectedChampionship._id}`);
+    await this.setState({
+      ...this.state,
+      completedRounds: rounds.data
     })
   }
 
@@ -81,6 +88,23 @@ class AddRound extends Component {
         }
       }
       return gamesInput;
+    }
+
+    const renderFinishedRounds = () => {
+      if(this.state.completedRounds){
+
+        return this.state.completedRounds.map(round => {
+
+          let startDate = moment(round.startDate, 'YYYY-MM-DD').get()
+          console.log(startDate)
+          return (
+            <div key={round._id}>
+              Round:{round.round} Starts On:{moment(round.startDate).format('DD-MM-YY')}
+            </div>
+          )
+        })
+      }
+
     }
 
     const submitRound = () => {
@@ -144,8 +168,12 @@ class AddRound extends Component {
           <input type='number' name='round' value={this.state.gamesInput} onChange={updateGamesInput} min='1'/>
         </label>
         {
+          renderFinishedRounds()
+        }
+        {
           renderGamesForm()
         }
+
         <button onClick={submitRound}>Submit</button>
       </div>
     )
